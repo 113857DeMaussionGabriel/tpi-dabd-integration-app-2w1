@@ -578,23 +578,29 @@
 <div
   class="modal fade"
   id="filterModal"
+  #filterModal
   tabindex="-1"
   aria-labelledby="filterModalLabel"
   aria-hidden="true"
   data-bs-keyboard="true"
+  style="background: rgba(0, 0, 0, 0.5); transition: opacity 0.15s linear;"
 >
   <div class="modal-dialog">
     <div class="modal-content">
+      <!-- Modal Header -->
       <div class="modal-header">
         <h5 class="modal-title" id="filterModalLabel">Filtros Avanzados</h5>
         <button
           type="button"
           class="btn-close"
-          data-bs-dismiss="modal"
+          (click)="closeFilterModal()"
           aria-label="Close"
         ></button>
       </div>
+
+      <!-- Modal Body -->
       <div class="modal-body">
+        <!-- Razones Filter -->
         <div class="row d-flex justify-content-start align-items-center mb-3">
           <div class="col-4">
             <label for="reportReasonSelect" class="form-label">Razones</label>
@@ -602,20 +608,21 @@
           <div class="col">
             <select
               id="reportReasonSelect"
-              (change)="applyFilters()"
               class="form-select"
               [(ngModel)]="reportReason"
+              (change)="applyFilters()"
               aria-label="Default select example"
             >
               <option value="" selected>Razones...</option>
-              @for (item of reportsReasons; track $index) {
-              <option value="{{ item.reportReason }}">
+              <!-- Iterate through reportsReasons -->
+              <option *ngFor="let item of reportsReasons; let i = index" [value]="item.reportReason">
                 {{ item.reportReason }}
               </option>
-              }
             </select>
           </div>
         </div>
+
+        <!-- Estados Filter -->
         <div class="row d-flex justify-content-start align-items-center mb-3">
           <div class="col-4">
             <label for="stateSelect" class="form-label">Estados</label>
@@ -623,31 +630,37 @@
           <div class="col">
             <select
               id="stateSelect"
-              (change)="applyFilters()"
               class="form-select"
-              aria-label="Default select example"
               [(ngModel)]="state"
+              (change)="applyFilters()"
+              aria-label="Default select example"
             >
               <option value="" selected>Estados...</option>
-              @for (item of states; track $index) {
-              <option value="{{ item.value }}">{{ item.value }}</option>
-              }
+              <!-- Iterate through states -->
+              <option *ngFor="let item of states; let i = index" [value]="item.value">
+                {{ item.value }}
+              </option>
             </select>
           </div>
         </div>
       </div>
+
+      <!-- Modal Footer -->
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Cerrar
-        </button>
         <button
           type="button"
+          class="btn btn-secondary"
+          (click)="closeFilterModal()"
+        >
+          Cerrar
+        </button>
+        <!-- <button
+          type="button"
           class="btn btn-primary"
-          data-bs-dismiss="modal"
-          (click)="applyFilters()"
+          (click)="applyFilters(); closeFilterModal()"
         >
           Aplicar
-        </button>
+        </button> -->
       </div>
     </div>
   </div>

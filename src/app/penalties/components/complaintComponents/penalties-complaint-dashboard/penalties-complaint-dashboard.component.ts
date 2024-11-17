@@ -1,11 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, ElementRef, inject, Renderer2, ViewChild } from '@angular/core';
 import { ComplaintService } from '../../../services/complaintsService/complaints.service';
 import {
   ComplaintDto,
   EstadoDenuncia,
   TipoDenuncia,
 } from '../../../models/complaint';
-import 'bootstrap';
 import { ChartType, GoogleChartsModule } from 'angular-google-charts';
 import { FormControl, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -15,7 +14,7 @@ import { ReportReasonDto } from '../../../models/ReportReasonDTO';
 import { PenaltiesKpiComponent } from '../penalties-kpi/penalties-kpi.component';
 import { textShadow } from 'html2canvas/dist/types/css/property-descriptors/text-shadow';
 
-declare let bootstrap: any;
+//declare let bootstrap: any;
 @Component({
   selector: 'app-penalties-complaint-dashboard',
   standalone: true,
@@ -139,7 +138,7 @@ export class PenaltiesComplaintDashboardComponent {
     }
   }
   
-  //constructor(private sanctionsService: SanctionsService) {}
+  constructor(private renderer: Renderer2) {}
 
   getCurrentYearMonth(): string {
     const now = new Date();
@@ -532,9 +531,26 @@ console.log('Denuncias filtradas:', filteredComplaints.length, filteredComplaint
   //     .reduce((a, b) => a[1] > b[1] ? a : b)[0] as unknown as number;
   // }
 
+  @ViewChild('filterModal') filterModal!: ElementRef;
+
   openFilterModal() {
-    const filterModal = new bootstrap.Modal(document.getElementById('filterModal'));
-    filterModal.show();
+    const modalElement = this.filterModal.nativeElement;
+    this.renderer.setStyle(modalElement, 'display', 'block');
+    setTimeout(() => {
+      this.renderer.addClass(modalElement, 'show');
+      this.renderer.setStyle(document.body, 'overflow', 'hidden');
+      this.renderer.setStyle(document.body, 'padding-right', '0px');
+    }, 10);
+  }
+
+  closeFilterModal() {
+    const modalElement = this.filterModal.nativeElement;
+    this.renderer.removeClass(modalElement, 'show');
+    this.renderer.removeStyle(document.body, 'overflow');
+    this.renderer.removeStyle(document.body, 'padding-right');
+    setTimeout(() => {
+      this.renderer.setStyle(modalElement, 'display', 'none');
+    }, 150);
   }
 }
 
