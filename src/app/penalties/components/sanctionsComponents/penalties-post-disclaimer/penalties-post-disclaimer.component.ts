@@ -110,7 +110,7 @@ export class PenaltiesPostDisclaimerComponent implements OnInit {
       },
       error: (e) => { console.log('Error al consultar getPlotById', e) }
     })
-    let notificationMessage = 'La multa sobre el lote: ' + plotName + ' - motivo: ' + reason + ' ha sido apelada';
+    let notificationMessage = 'La multa sobre la propiedad: ' + plotName + ' - motivo: ' + reason + ' ha sido apelada';
     this.notifyDisclaimer(notificationMessage);
   }
 

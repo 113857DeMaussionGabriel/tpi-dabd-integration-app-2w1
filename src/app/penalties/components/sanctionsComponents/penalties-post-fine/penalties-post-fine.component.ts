@@ -127,16 +127,19 @@ export class PenaltiesPostFineComponent implements OnInit {
             if (this.reactiveForm.get('infractionType')?.value === 'fine') {
               isWarning = false;
             }
-            let notification = {
-              owner_ids: ownersIds,
-              reason: this.report.reportReason.reportReason, // report => ReportReason (Entidad) => reportReason propiedad de la entidad
-              amount: this.reactiveForm.get('amount')?.value,
-              warning: isWarning
-            }
-            this.penaltiesService.notifyNewFineOrWarning(notification).subscribe({
-              next: () => { },
-              error: (e) => { console.log("Error al notificar al propietario: ", e) }
+            ownersIds.forEach(id => {
+              let notification = {
+                user_id: id,
+                reason: this.report.reportReason.reportReason, // report => ReportReason (Entidad) => reportReason propiedad de la entidad
+                amount: this.reactiveForm.get('amount')?.value,
+                warning: isWarning
+              }
+              this.penaltiesService.notifyNewFineOrWarning(notification).subscribe({
+                next: () => { },
+                error: (e) => { console.log("Error al notificar al propietario: ", e) }
+              });
             });
+
             Swal.fire({
               title: '¡Multa enviada!',
               text: 'La multa ha sido enviada correctamente.',

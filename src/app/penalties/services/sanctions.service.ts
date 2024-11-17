@@ -18,7 +18,7 @@ export class SanctionService {
   private readonly reportReasonUrl = 'http://localhost:8042/api/report-reason';
 
   // Comunicacion con Notificaciones
-  private readonly notificationsUrl = '/fines/'; // Cambiar por la url de notificaciones
+  private readonly notificationsUrl = 'http://host.docker.internal:9050/fines/'; // Cambiar por la url de notificaciones
 
 
 
@@ -39,8 +39,8 @@ export class SanctionService {
     return this.http.get(this.url + "report/states")
   }
 
-   ///report/states
-   getStateFines(): Observable<any> {
+  ///report/states
+  getStateFines(): Observable<any> {
     return this.http.get(this.url + "sanction/allFinesState")
   }
 
@@ -83,7 +83,7 @@ export class SanctionService {
     return this.http.put(this.url + 'report', reportDTO);
   }
 
-  putStateFine(data:any){
+  putStateFine(data: any) {
     return this.http.put(this.url + 'sanction/changeStateFine', data);
   }
 
@@ -100,14 +100,14 @@ export class SanctionService {
     this.refreshSubject.next();
   }
 
-  getAllFines():Observable<Fine[]>{
+  getAllFines(): Observable<Fine[]> {
     return this.http.get<Fine[]>(this.url + "sanction/allFines")
-  } 
+  }
 
-    // Obtiene todos los tipos de razones
-    getAllReportReasons(): Observable<any> {
-      return this.http.get<ReportReasonDto[]>(this.reportReasonUrl + "/all");
-    }
+  // Obtiene todos los tipos de razones
+  getAllReportReasons(): Observable<any> {
+    return this.http.get<ReportReasonDto[]>(this.reportReasonUrl + "/all");
+  }
 
   getDefaultFromDate(): string {
     const date = new Date();
@@ -116,17 +116,17 @@ export class SanctionService {
   }
 
   // Comunicacion con Notificaciones
-  notifyNewDisclaimer(message: string){
-    return this.http.post<any>(`${this.notificationsUrl}/newAppealWarn`, {message});
+  notifyNewDisclaimer(message: string) {
+    return this.http.post<any>(`${this.notificationsUrl}/newAppealWarn`, { message });
   }
 
-  notifyDischargeResolved(appealUpdate:any){
+  notifyDischargeResolved(appealUpdate: any) {
     return this.http.post<any>(`${this.notificationsUrl}/appealUpdate`, appealUpdate);
   }
 
-  notifyNewFineOrWarning(fineOrWarning: any){
+  notifyNewFineOrWarning(fineOrWarning: any) {
     return this.http.post<any>(`${this.notificationsUrl}/newFineOrWarning`, fineOrWarning);
   }
 
-  
+
 }

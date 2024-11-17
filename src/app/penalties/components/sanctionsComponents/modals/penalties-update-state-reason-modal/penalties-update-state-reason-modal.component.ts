@@ -71,16 +71,18 @@ export class PenaltiesUpdateStateReasonModalComponent {
         dischargeState = 'ACCEPTED'// Aceptada
       }
       let ownersIds: number[] = this.getOwnersIdByPlotId(this.fine.report.plotId);
-      let appealUpdate = {
-        appealStatus: dischargeState,
-        motive: this.reasonText,
-        owner_ids: ownersIds
-      }
-      this.sanctionService.notifyDischargeResolved(appealUpdate).subscribe({
-        next: () => { console.log("Notificacion enviada correctamente") },
-        error: (e) => {
-          console.log("Error al enviar la notificacion: ", e)
-        }
+      ownersIds.forEach(id => {
+        let appealUpdate = {
+          appealStatus: dischargeState,
+          motive: this.reasonText,
+          user_id: id
+        };
+        this.sanctionService.notifyDischargeResolved(appealUpdate).subscribe({
+          next: () => { console.log("Notificacion enviada correctamente") },
+          error: (e) => {
+            console.log("Error al enviar la notificacion: ", e)
+          }
+        });
       });
 
       Swal.fire({
