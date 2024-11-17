@@ -127,4 +127,6 @@ export class SanctionService {
   notifyNewFineOrWarning(fineOrWarning: any){
     return this.http.post<any>(`${this.notificationsUrl}/newFineOrWarning`, fineOrWarning);
   }
+
+  
 }

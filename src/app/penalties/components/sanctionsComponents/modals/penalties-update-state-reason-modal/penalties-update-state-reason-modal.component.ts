@@ -4,6 +4,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SanctionService } from '../../../../services/sanctions.service';
 import Swal from 'sweetalert2';
 import { UserService } from '../../../../../users/users-servicies/user.service';
+import { UserGet } from '../../../../../users/users-models/users/UserGet';
 
 @Component({
   selector: 'app-penalties-update-state-reason-modal',
@@ -13,15 +14,15 @@ import { UserService } from '../../../../../users/users-servicies/user.service';
   styleUrl: './penalties-update-state-reason-modal.component.scss'
 })
 export class PenaltiesUpdateStateReasonModalComponent {
-  private readonly userService =inject(UserService);
+  private readonly userService = inject(UserService);
   reasonText: String = ""
   @Input() id: number = 1
   @Input() fineState: string = ""
   @Input() fine: any = ""
   userId: number = 1;
 
-  constructor(public activeModal: NgbActiveModal, 
-    public sanctionService: SanctionService) {}
+  constructor(public activeModal: NgbActiveModal,
+    public sanctionService: SanctionService) { }
 
 
   ngOnInit(): void {
@@ -69,10 +70,11 @@ export class PenaltiesUpdateStateReasonModalComponent {
       else if (this.fineState == 'ACQUITTED') {
         dischargeState = 'ACCEPTED'// Aceptada
       }
+      let ownersIds: number[] = this.getOwnersIdByPlotId(this.fine.report.plotId);
       let appealUpdate = {
         appealStatus: dischargeState,
         motive: this.reasonText,
-        user_id: "" // PEDIRSERVICE utilizar this.fine.report.plotId para ver el user_id del plot
+        owner_ids: ownersIds
       }
       this.sanctionService.notifyDischargeResolved(appealUpdate).subscribe({
         next: () => { console.log("Notificacion enviada correctamente") },
@@ -101,12 +103,18 @@ export class PenaltiesUpdateStateReasonModalComponent {
     })
   }
 
-  getUserIdByPlot(plotId: number):number {
-    const userId: number;
+  getOwnersIdByPlotId(plotId: number): number[] {
+    let ownersIds: number[] = [];
+    let users: UserGet[] = [];
     this.userService.getUsersByPlotID(plotId).subscribe({
-      next: (user) =>{
-        userId = user.
+      next: (data) => { users = data },
+      error: (e) => { console.log("Error al cargar usuarios: ", e) }
+    });
+    users.forEach((user: UserGet) => {
+      if (user.roles.includes('Propietario')) {
+        ownersIds.push(user.id);
       }
-    })
+    });
+    return ownersIds;
   }
 }
