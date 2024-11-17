@@ -176,8 +176,6 @@ export class PenaltiesSanctionsReportListComponent implements OnInit {
               `<li><a class="dropdown-item" data-action="newSaction" data-id="${data.id}"">Sancionar</a></li>` : ''}
                         ${data.reportState === 'Abierto' || data.reportState === 'Pendiente' ?
               `<li><a class="dropdown-item" data-action="changeState" data-id="${data.id}" data-state="REJECTED"">Rechazar</a></li>` : ''}
-                          ${data.reportState === 'Abierto' || data.reportState === 'Pendiente' ?
-              `<li><a class="dropdown-item" data-action="changeState" data-id="${data.id}" data-state="CLOSED"">Cerrar</a></li>` : ''}
                  </ul>
                 </div>
               </div>

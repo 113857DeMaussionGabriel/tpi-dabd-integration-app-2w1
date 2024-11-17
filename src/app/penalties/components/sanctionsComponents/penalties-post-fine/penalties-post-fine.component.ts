@@ -149,8 +149,8 @@ export class PenaltiesPostFineComponent implements OnInit {
             });
             const reportDto: any = {
               id: this.report.id,
-              reportState: "ENDED",
-              stateReason: "Multa generada, se finaliza el proceso",
+              reportState: "CLOSED",
+              stateReason: "Multa generada",
               userId: this.report.userId
             };
             this.reportService.putStateReport(reportDto).subscribe(res => {
