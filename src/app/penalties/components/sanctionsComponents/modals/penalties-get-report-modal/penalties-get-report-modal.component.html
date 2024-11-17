@@ -6,64 +6,63 @@
   <div class="modal-body">
 
     <h5>Información del Informe</h5>
-      <div class="row mb-3">
-          <div class="col-md-6">
-              <p><strong>Motivo</strong> {{ report?.reportReason.reportReason || 'N/A' }}</p>
-              <p><strong>Fecha</strong> {{ report?.createdDate | date:"dd/MM/yyyy" || 'N/A' }}</p>
-          </div>
-      
-          <div class="col-md-6">
-              <p><strong>Descripción</strong> {{ report?.description || 'N/A' }}</p>
-          </div>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <p><strong>Motivo</strong> {{ report?.reportReason.reportReason || 'N/A' }}</p>
+        <p><strong>Fecha</strong> {{ report?.createdDate ? (report.createdDate | date:"dd/MM/yyyy") : 'N/A' }}</p>
       </div>
-      <hr>
 
-        <h5>Denuncias</h5>
-        <div class="overflow-auto" style="max-height: 300px;">
-        <table class="table table-bordered">
+      <div class="col-md-6">
+        <p><strong>Descripción</strong> {{ report?.description || 'N/A' }}</p>
+      </div>
+    </div>
+    <hr>
 
-            <thead>
-                <tr>
-                  <th>Descripción</th>
-                  <th>Tipo de Denuncia</th>
-                  <th>Estado</th>
-                  <th>Fecha</th>
-                </tr>
-            </thead>
-            <tbody>  
-              @for(complaint of report?.complaints; track $index){
-                <tr>
-                    <td>{{ complaint.description }}</td>
-                    <td>
-                      @if (complaint?.complaintReason==="Otro"){
-                        <p> {{ complaint?.complaintReason + " - " + complaint?.anotherReason || 'N/A' }}</p>
-          
-                      }
-                      @else {
-                        <p> {{ complaint?.complaintReason || 'N/A' }}</p>
-                      }
-                     </td>
-                    <td>{{ complaint.complaintState }}</td>
-                    <td>{{ complaint.createdDate | date:"dd/MM/yyyy" }}</td>
-                </tr>
-              
+    <h5>Denuncias</h5>
+    <div class="overflow-auto" style="max-height: 300px;">
+      <table class="table table-bordered">
+
+        <thead>
+          <tr>
+            <th>Descripción</th>
+            <th>Tipo de Denuncia</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for(complaint of report?.complaints; track $index){
+          <tr>
+            <td>{{ complaint.description }}</td>
+            <td>
+              @if (complaint?.complaintReason==="Otro"){
+              <p> {{ complaint?.complaintReason + " - " + complaint?.anotherReason || 'N/A' }}</p>
+
               }
-            
-            </tbody>
-        </table>
+              @else {
+              <p> {{ complaint?.complaintReason || 'N/A' }}</p>
+              }
+            </td>
+            <td>{{ complaint.complaintState }}</td>
+            <td>{{ complaint.createdDate | date:"dd/MM/yyyy" }}</td>
+          </tr>
+
+          }
+
+        </tbody>
+      </table>
+    </div>
+    <hr>
+    <h5>Estado de la Multa</h5>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <p><strong>Estado</strong> {{ report?.reportState || 'N/A' }}</p>
+        <p><strong>Razón</strong> {{ report?.stateReason || 'N/A' }}</p>
       </div>
-        <hr>
-        <h5>Estado de la Multa</h5>
-      <div class="row mb-3">
-          <div class="col-md-6">
-              <p><strong>Estado</strong> {{ report?.reportState || 'N/A' }}</p>
-              <p><strong>Razón</strong> {{ report?.stateReason || 'N/A' }}</p>
-          </div>
-      </div>
+    </div>
 
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="close()">Cerrar</button>
   </div>
 </div>
-

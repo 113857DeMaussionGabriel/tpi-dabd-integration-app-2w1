@@ -17,6 +17,10 @@ export class SanctionService {
   private readonly url = 'http://localhost:8042/api/';
   private readonly reportReasonUrl = 'http://localhost:8042/api/report-reason';
 
+  // Comunicacion con Notificaciones
+  private readonly notificationsUrl = '/fines/'; // Cambiar por la url de notificaciones
+
+
 
   constructor() { }
 
@@ -109,5 +113,18 @@ export class SanctionService {
     const date = new Date();
     date.setMonth(date.getMonth() - 6); // Cambiar a 6 meses atrás
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+  }
+
+  // Comunicacion con Notificaciones
+  notifyNewDisclaimer(message: string){
+    return this.http.post<any>(`${this.notificationsUrl}/newAppealWarn`, {message});
+  }
+
+  notifyDischargeResolved(appealUpdate:any){
+    return this.http.post<any>(`${this.notificationsUrl}/appealUpdate`, appealUpdate);
+  }
+
+  notifyNewFineOrWarning(fineOrWarning: any){
+    return this.http.post<any>(`${this.notificationsUrl}/newFineOrWarning`, fineOrWarning);
   }
 }
