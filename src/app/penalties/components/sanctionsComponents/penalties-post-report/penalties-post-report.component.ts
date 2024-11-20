@@ -123,19 +123,6 @@ export class NewReportComponent {
       ? this.complaintsList.map(complaint => complaint.id)
       : [];
 
-    if (complaintsIds.length === 0) {
-      Swal.fire({
-        title: '¡Advertencia!',
-        text: 'Debe cargar al menos una denuncia.',
-        icon: 'warning',
-        confirmButtonText: 'Aceptar',
-        customClass: {
-          confirmButton: 'btn btn-secondary'
-        },
-      });
-      return;
-    }
-
     if (this.reactiveForm.valid) {
       let formData = this.reactiveForm.value;
       
